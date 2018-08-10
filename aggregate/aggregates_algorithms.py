@@ -1,5 +1,4 @@
 from skimage.io import imread
-from matplotlib import pyplot as plt
 import numpy as np
 from skimage.filters import sobel
 from skimage.morphology import watershed
