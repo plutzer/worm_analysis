@@ -7,25 +7,23 @@ from skimage.measure import label
 from skimage.feature import blob_log,blob_dog,blob_doh
 
 def adap_threshold(image,thresh,mask = None):
-	if mask == None:
+	if mask is None:
 		threshold = np.percentile(image,thresh)
 	else:
 		inMask = image[mask > .5]
 		threshold = np.percentile(inMask,thresh)
 	threshIm = image>threshold
 	labeled_threshIm = label(threshIm)
-	plt.imshow(labeled_threshIm)
-	plt.show()
 	threshold_regions = np.max(labeled_threshIm)
 	threshold_intensity = threshold
-	if mask != None:
+	if mask is not None:
 		percent_threshold = (np.sum(threshIm))/(np.sum(mask > .5))
 		return(threshold_regions,threshold_intensity,percent_threshold)
 	else:
 		return(threshold_regions,threshold_intensity,'NaN')
 
 def watershed_aggs(image,low,high,mask = None):
-	if mask == None:
+	if mask is None:
 		high_thresh = np.percentile(image,high)
 		low_thresh = np.percentile(image,low)
 	else:
@@ -42,12 +40,12 @@ def watershed_aggs(image,low,high,mask = None):
 	return(watershed_regions,integrated_watershed_percent)
 
 
-def log(image,thresh,min_sigma,max_sigma,num_sigma = 10,mask = None):
+def log(image,thresh,min_sigma,max_sigma,num_sigma = 8,mask = None):
 	blobs = blob_log(image,min_sigma = min_sigma,max_sigma = max_sigma,num_sigma = num_sigma,threshold = thresh,overlap = .8)
 	total_blobs = len(blobs)
 	return(total_blobs)
 
-def doh(image,thresh,min_sigma,max_sigma,num_sigma = 10,mask = None):
+def doh(image,thresh,min_sigma,max_sigma,num_sigma = 8,mask = None):
 	blobs = blob_doh(image,min_sigma = min_sigma,max_sigma = max_sigma,num_sigma = num_sigma,threshold = thresh,overlap = .8)
 	total_blobs = len(blobs)
 	return(total_blobs)
