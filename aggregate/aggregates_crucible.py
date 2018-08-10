@@ -1,5 +1,5 @@
 import os
-from Desktop import aggregates_algorithms
+import aggregates_algorithms
 from skimage.io import imread
 import csv
 
