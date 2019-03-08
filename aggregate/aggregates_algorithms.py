@@ -54,3 +54,7 @@ def dog(image,min_sigma,max_sigma,sigma_ratio,thresh,mask = None):
 	total_blobs = len(blobs)
 	return(total_blobs)
 
+## Algorithm to check points for good gradients:
+def checker(image, x, y, ratio_threshold): #Where x and y are the coordinates of a detected blob.
+
+
