@@ -105,6 +105,6 @@ def run_dir(directory):
 			measurement_writer.writerow([item for item in items_list])
 			print('Wrote results for image: ' + str(worm_num_ext))
 
-directory = '/scratch/plutzer/Aggregates_training_data/Worm1/' ## Change this as needed
+directory = '/Users/plutzer/zplab/worm_analysis/testdata/Aggregates_training_data/Worm1/' ## Change this as needed
 run_dir(directory)
 
