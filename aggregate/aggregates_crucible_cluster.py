@@ -3,6 +3,7 @@ import aggregates_algorithms
 print('got here')
 from skimage.io import imread
 import csv
+import sys
 
 
 # The purpose of this script is to exhaustively test all possible aggregate counting measurements.
@@ -110,7 +111,7 @@ def run_dir(directory):
 				measurement_writer.writerow([item for item in items_list])
 				print('Wrote results for image: ' + str(worm_num_ext))
 
-directory = '/scratch/plutzer/Aggregates_training_data/Worm1/' ## Change this as needed
+directory = sys.argv[1] ## Change this as needed
 print('starting run')
 run_dir(directory)
 
