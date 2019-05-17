@@ -2,9 +2,11 @@ from ris_widget import ris_widget;
 import elegant.gui
 from elegant.gui import points_annotation
 from elegant.gui import experiment_annotator
+from elegant.gui import pose_annotation
 from elegant import load_data
+from elegant import worm_spline
 import os
-from skimage.io import imread
+from skimage.io import imread,imsave
 import csv
 
 ## If experiment is false, returns a list of filenames and the annotations list.
@@ -50,3 +52,32 @@ def save_annotations(annotations,filenames = [], directory = " ", experiment = F
 			for item in range(len(annotations)):
 				writer.writerow([filenames[item],annotations[item]])
 		return
+
+def manual_straightening(directory): #Base directory: should include 'bf' and 'gfp' folders
+	rw = ris_widget.RisWidget()
+	pa = pose_annotation.PoseAnnotation(rw)
+	rw.add_annotator([pa])
+	filenames = []
+	for item in os.listdir(directory + '/bf'):
+		try:
+			filename = os.fsdecode(item)
+			fname_base = filename[0:len(filename)-6]
+			#print(fname_base)
+			image = imread(directory + '/bf/' + filename,as_grey = True)
+			rw.flipbook_pages.append(image)
+			filenames.append(filename)
+		except:
+			print('doing nothing')
+	return(filenames,rw.annotator.all_annotations)
+
+def create_straightened_images(directory,filenames,annotations): #Base directory: should include 'bf' and 'gfp' folders as well as 'straightened_bf' and 'straightened_gfp' folders
+	for num in range(len(filenames)):
+		base = filenames[num][0:len(filenames[num]) - 6]
+		gfp_im = imread(directory + '/gfp/' + base + 'gfp.png',as_grey = True)
+		bf_im = imread(directory + '/bf/' + base + 'bf.png',as_grey = True)
+		str_bf = worm_spline.to_worm_frame(bf_im,annotations[num]['pose'][0],sample_distance = 80)
+		str_gfp = worm_spline.to_worm_frame(gfp_im,annotations[num]['pose'][0],sample_distance = 80)
+		imsave(directory + '/straightened_gfp/' + base + 'straightened_gfp.png',str_gfp)
+		imsave(directory + '/straightened_bf/' + base + 'straightened_bf.png',str_bf)
+
+
